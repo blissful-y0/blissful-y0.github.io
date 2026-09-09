@@ -1,0 +1,37 @@
+---
+import { formatDate } from '../data/site';
+
+interface Props {
+  post: {
+    id: string;
+    data: {
+      title: string;
+      description: string;
+      date: Date;
+      category: string;
+      tags: string[];
+      readingTime: string;
+    };
+  };
+  featured?: boolean;
+}
+
+const { post, featured = false } = Astro.props;
+---
+
+<article class:list={['post-card', { 'post-card--featured': featured }]} data-post-card data-title={post.data.title.toLowerCase()} data-description={post.data.description.toLowerCase()} data-tags={post.data.tags.join('|').toLowerCase()}>
+  <a href={`/blog/${post.id}/`}>
+    <div class="post-card__meta">
+      <span class="post-category">{post.data.category}</span>
+      <span><b class="post-sample">sample</b> · {formatDate(post.data.date)} · {post.data.readingTime}</span>
+    </div>
+    <h3>{post.data.title}</h3>
+    <p>{post.data.description}</p>
+    <div class="post-card__footer">
+      <span class="post-tags" aria-label="태그">
+        {post.data.tags.slice(0, 2).map((tag) => <span>#{tag}</span>)}
+      </span>
+      <span class="card-arrow" aria-hidden="true">↗</span>
+    </div>
+  </a>
+</article>

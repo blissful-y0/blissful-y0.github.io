@@ -1,0 +1,59 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import { formatDate } from '../../data/site';
+import '../../styles/blog.css';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  return posts.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+const posts = (await getCollection('posts')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const currentIndex = posts.findIndex((post) => post.id === entry.id);
+const newerPost = currentIndex > 0 ? posts[currentIndex - 1] : undefined;
+const olderPost = currentIndex < posts.length - 1 ? posts[currentIndex + 1] : undefined;
+const toc = headings.filter((heading) => heading.depth === 2);
+---
+
+<BaseLayout title={`${entry.data.title} · Bliss Journal`} description={entry.data.description} compactHeader>
+  <main class="page-content page-content--post" data-pagefind-body>
+    <header class="post-header">
+      <div class="post-header__meta">
+        <span class="post-category" data-pagefind-filter="category">{entry.data.category}</span>
+        <span>{formatDate(entry.data.date)}</span>
+        <span>·</span>
+        <span>{entry.data.readingTime}</span>
+      </div>
+      <h1>{entry.data.title}</h1>
+      <p class="post-lead">{entry.data.description}</p>
+    </header>
+
+    <div class="post-layout">
+      {toc.length > 0 && <aside class="post-toc" aria-label="글 목차">
+        <p>on this page</p>
+        <ol>
+          {toc.map((heading) => <li><a href={`#${heading.slug}`}>{heading.text}</a></li>)}
+        </ol>
+      </aside>}
+      <article class="prose">
+        <Content />
+        <div class="post-end">
+          <span class="post-tags" aria-label="태그">
+            {entry.data.tags.map((tag) => <span data-pagefind-filter={`tag:${tag}`}>#{tag}</span>)}
+          </span>
+          <a class="text-link text-link--dark" href="/blog/">목록으로 <span aria-hidden="true">↗</span></a>
+        </div>
+      </article>
+    </div>
+
+    <nav class="post-navigation" aria-label="이전 글과 다음 글">
+      {newerPost ? <a class="text-link text-link--dark" href={`/blog/${newerPost.id}/`}><span aria-hidden="true">←</span> {newerPost.data.title}</a> : <span></span>}
+      {olderPost ? <a class="text-link text-link--dark" href={`/blog/${olderPost.id}/`}>{olderPost.data.title} <span aria-hidden="true">→</span></a> : <span></span>}
+    </nav>
+  </main>
+  <SiteFooter />
+</BaseLayout>

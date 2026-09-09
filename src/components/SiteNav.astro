@@ -1,0 +1,27 @@
+---
+import { navItems, profile } from '../data/site';
+
+interface Props {
+  variant?: 'default' | 'hero';
+}
+
+const { variant = 'default' } = Astro.props;
+---
+
+<header class:list={['site-nav', `site-nav--${variant}`]}>
+  <a class="brand" href="/" aria-label={`${profile.displayName} 홈`}>
+    <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+    <span>{profile.displayName}<b aria-hidden="true">_</b></span>
+  </a>
+
+  <nav class="desktop-nav" aria-label="주 메뉴">
+    {navItems.map((item) => <a href={item.href}>{item.label}</a>)}
+  </nav>
+
+  <details class="mobile-nav">
+    <summary aria-label="메뉴 열기"><span></span><span></span></summary>
+    <nav aria-label="모바일 주 메뉴">
+      {navItems.map((item) => <a href={item.href}>{item.label}</a>)}
+    </nav>
+  </details>
+</header>

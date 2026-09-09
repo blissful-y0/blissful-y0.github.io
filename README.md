@@ -1,235 +1,56 @@
-# Pixyll
+# Bliss portfolio
 
-[pixyll.com](https://www.pixyll.com/)
+Astro로 만든 개인 홈페이지와 블로그 미리보기입니다. 홈에는 Three.js로 만든 미니멀한 3D 링 장면을 두고, 글은 Markdown 콘텐츠 컬렉션으로 관리합니다. 블로그 글은 교체를 전제로 한 샘플 데이터입니다.
 
-![Pixyll screenshot](./screenshot.png)
+## 시작하기
 
-Pixyll is a simple, beautiful theme for Jekyll that emphasizes content rather than aesthetic fluff. It's mobile _first_, fluidly responsive, and delightfully lightweight.
-
-It's pretty minimal, but leverages large type and drastic contrast to make a statement, on all devices.
-
-This Jekyll theme was crafted with <3 by [John Otander](https://johno.com/)
-([@4lpine](https://twitter.com/4lpine)).
-
-中文版 <https://github.com/ee0703/pixyll-zh-cn>.
-
-## Getting Started
-
-If you're completely new to Jekyll, I recommend checking out the documentation at <https://jekyllrb.com/> or there's a tutorial by [Smashing Magazine](https://www.smashingmagazine.com/2014/08/build-blog-jekyll-github-pages/).
-
-```
-$ git clone git@github.com:johno/pixyll.git
-$ cd pixyll
-$ gem install bundler # If you don't have bundler installed
-$ bundle install
+```bash
+npm install
+npm run dev
 ```
 
-#### Verify your Jekyll version
+브라우저에서 `http://localhost:4321/`을 엽니다.
 
-It's important to also check your version of Jekyll since this project uses new `baseurl` features that are [only supported in 3.3+](https://jekyllrb.com/news/2016/10/06/jekyll-3-3-is-here/).
+정적 결과와 Pagefind 검색 인덱스를 함께 만들려면 다음을 실행합니다.
 
-### Fork, then clone
-
-Fork the repo, and then clone it so you've got the code locally.
-
-
-### Modify the `_config.yml`
-
-The `_config.yml` located in the root of the Pixyll directory contains all of the configuration details
-for the Jekyll site. The defaults are:
-
-```yml
-# Site settings
-title: Pixyll
-email: your_email@example.com
-author: John Otander
-description: "A simple, beautiful theme for Jekyll that emphasizes content rather than aesthetic fluff."
-baseurl: ""
-url: "https://pixyll.com/"
-
-# Build settings
-markdown: kramdown
-permalink: pretty
-paginate: 3
+```bash
+npm run check
+npm run build
+npm run preview
 ```
 
-### Jekyll Serve
+`npm run build`는 `dist/`에 정적 페이지를 만들고 `dist/pagefind/`에 본문 검색 인덱스를 생성합니다. 개발 서버에서는 검색 인덱스가 아직 없기 때문에 제목과 요약을 사용하는 fallback이 동작합니다.
 
-Then, start the Jekyll Server. I always like to give the `--watch` option so it updates the generated HTML when I make changes.
+## 콘텐츠 수정
 
-```
-$ jekyll serve --watch
-```
+블로그 글은 [`src/content/posts`](src/content/posts)에 Markdown 파일로 추가합니다.
 
-Now you can navigate to `localhost:4000` in your browser to see the site.
+```md
+---
+title: '글 제목'
+description: '목록과 검색 결과에 표시할 요약'
+date: 2026-09-09
+category: 'build log'
+tags: ['astro', 'notes']
+readingTime: '4분 읽기'
+featured: false
+sample: true
+---
 
-### Using Github Pages
-
-You can host your Jekyll site for free with Github Pages. [Click here](https://pages.github.com/) for more information.
-
-#### A configuration tweak if you're using a gh-pages sub-folder
-
-In addition to your github-username.github.io repo that maps to the root url, you can serve up sites by using a gh-pages branch for other repos so they're available at github-username.github.io/repo-name.
-
-This will require you to modify the `_config.yml` like so:
-
-```yml
-# Site settings
-title: Repo Name
-email: your_email@example.com
-author: John Otander
-description: "Repo description"
-baseurl: "/repo-name"
-url: "https://github-username.github.io"
-
-# Build settings
-markdown: kramdown
-permalink: pretty
-paginate: 3
+본문을 여기에 씁니다.
 ```
 
-This will ensure that the the correct relative path is constructed for your assets and posts. Also, in order to run the project locally, you will need to specify the blank string for the baseurl: `$ jekyll serve --baseurl ''`.
+제목, 설명, 날짜, 카테고리, 태그는 콘텐츠 스키마로 검사합니다. 실제 글로 교체하면 `sample: false`로 바꾸고 카드의 샘플 표기도 함께 조정하면 됩니다.
 
-##### If you don't want the header to link back to the root url
+작업실 이미지는 [`public/images`](public/images)의 `lofi-room-desktop.webp`와 `lofi-room-mobile.webp`를 교체하면 됩니다. 데스크톱은 가로, 모바일은 세로 이미지를 사용합니다.
 
-You will also need to tweak the header include `/{{ site.baseurl }}`:
+## 경로
 
-```html
-<header class="site-header px2 px-responsive">
-  <div class="mt2 wrap">
-    <div class="measure">
-      <a href="{{ "/" | relative_url }}" class="site-title">{{ site.title }}</a>
-      <nav class="site-nav">
-        {% include navigation.html %}
-      </nav>
-    </div>
-  </div>
-</header>
-```
+- `/` — About me 랜딩 페이지
+- `/blog/` — 글 목록, tag 필터, 본문 검색
+- `/blog/<slug>/` — 글 본문과 목차
+- `/rss.xml` — 블로그 RSS
 
-A relevant Jekyll Github Issue: <https://github.com/jekyll/jekyll/issues/332>
+## 배포
 
-### Contact Form
-
-The contact form uses <https://formspree.io/>. It will require you to fill the form out and submit it once, before going live, to confirm your email.
-
-More setup instructions and advanced options can be found at [https://formspree.io](https://formspree.io/)
-
-
-### Disqus
-
-To configure Disqus, set up a [Disqus site](https://disqus.com/admin/create/) with the same name as your site. Then, in `_config.yml`, edit the `disqus_shortname` value to enable Disqus.
-
-### Customizing the CSS
-
-All variables can be found in the `_sass/_variables.scss` file, toggle these as you'd like to change the look and feel of Pixyll.
-
-### Page Animation
-
-If you would like to add a [fade-in-down effect](https://animate.style/), you can add `animated: true` to your `_config.yml`.
-
-### AnchorJS
-
-[AnchorJS](https://github.com/bryanbraun/anchorjs): _A JavaScript utility for adding deep anchor links to existing page content. AnchorJS is lightweight, accessible, and has no dependencies._ You can turn it on by toggling `enable_anchorjs`. Because it offers many ways for customization, tweaks should be done in `_includes/footer.html`. Default settings after turning AnchorJS on are:
-
-```html
-<script>
-    anchors.options.visible = 'always';
-    anchors.add('article h2, article h3, article h4, article h5, article h6');
-</script>
-```
-
-See [documentation](https://www.bryanbraun.com/anchorjs/#basic-usage) for more options.
-
-### Put in a Pixyll Plug
-
-If you want to give credit to the Pixyll theme with a link to <https://pixyll.com/> or my personal website <https://johno.com/> somewhere, that'd be awesome. No worries if you don't.
-
-### Web analytics and search engines
-
-You can measure visits to your website either by using [Google Analytics](https://www.google.com/analytics/) tracking embed or the more advanced [Google Tag Manager](https://www.google.com/analytics/tag-manager/) container.
-* For Google Analytics set up the value for `google_analytics`, it should be something like `google_analytics: UA-XXXXXXXX-X`.
-* For Google Tag Manager set up the value for `google_tag_manager`, it should be something like: `google_tag_manager: GTM-XXXXX`.
-* _Do not_ set both of above methods because this will cause conflicts and skew your reporting data.
-* Remember that you need to properly configure the GTM container in its admin panel if you want it to work. More info is available in [GTM's docs](https://www.google.com/analytics/tag-manager/resources/).
-
-Your website is, by default, set to be allowed for crawling and indexing by search engines. (Unless you made yourself a custom robots.txt file). You can use front matter settings on each page to control how search engines will it. Sometimes you may want to exclude a particular page from indexing or forbid Google to store a copy of your page in its cache. It is up to you. Use the `meta_robots` frontmatter key and assign values based on [this table](https://developers.google.com/webmasters/control-crawl-index/docs/robots_meta_tag?hl=en#valid-indexing--serving-directives). Some examples:
-
-```yaml
-# exclude page from index
-meta_robots: noindex
-
-# allow indexing, disallow caching
-meta_robots: noarchive
-
-# allow indexing, disallow crawling links
-meta_robots: nofollow
-
-# disallow indexing, follow links
-meta_robots: noindex,follow
-```
-
-In order to get more information about your website's status in search engines, you can register it in [Google Search Console](https://search.google.com/search-console/about) and/or [Bing Webmaster Tools](https://www.bing.com/webmasters/about). Both these tools will ask you to authorize your website with them and there are couple of ways to do that. Pixyll supports verification via meta tags - just fill in values for `google_verification` and/or `bing_verification` in `_config.yml`, the verification strings and meta tags will then be added automatically.
-
-If search engine optimization is your thing, you can also set up `meta_description` values for each page/post. By default Pixyll uses `summary` to populate the `<meta name="description" content="...">` tag and falls back to `description` from `_config.yml` if `summary` is not present in page/post's front matter. The `summary` is also used for generating Open Graph tags. Why would you want to use a dedicated variable for meta description? Because character limit to properly display this description in search results (as a snippet) is way smaller than in Open Graph. It is recommended to keep it at 155-160 characters, for more in-depth info read [this article](https://moz.com/blog/i-cant-drive-155-meta-descriptions-in-2015).
-
-And lastly - if you happen to write in language other than English be sure to change `og_locale` in `_config.yml` to reflect it.
-
-### Progressive Web App
-
-Pixyll supports features of a progressive web app (PWA).  As a PWA, your site's home page can be installed as a shortcut or an app icon on a mobile device.  Also, certain assets are cached so the site can be accessed should the device be offline from the network.
-
-Pixyll supports these features because it provides a Javascript file that acts as a *service worker* in the browser and has a JSON file with a *web manifest*.  By default, these are configured to the settings of Pixyll, but you should consider cutomizing them to your specific site:
-
-1. Provide a different version of `splash-512x512.png` which is the loading screen for your offline app.
-2. A `favicon-192x192.png` for the app icon (if you haven't already).
-3. In `sw.js`, list any other files or pages you want to add to the list of cached artifacts.
-
-For more information on PWAs:
-
-- https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps
-- https://web.dev/what-are-pwas/
-
-### Enjoy
-
-I hope you enjoy using Pixyll. If you encounter any issues, please feel free to let me know by creating an [issue](https://github.com/johno/pixyll/issues). I'd love to help.
-
-## Upgrading Pixyll
-
-Pixyll is always being improved by its users, so sometimes one may need to upgrade.
-
-#### Ensure there's an upstream remote
-
-If `git remote -v` doesn't have an upstream listed, you can do the following to add it:
-
-```
-git remote add upstream https://github.com/johno/pixyll.git
-```
-
-#### Pull in the latest changes
-
-```
-git pull upstream master
-```
-
-There may be merge conflicts, so be sure to fix the files that git lists if they occur. That's it!
-
-## Thanks to the following
-
-* [BASSCSS](https://basscss.com/)
-* [Jekyll](https://jekyllrb.com/)
-* [Refills](https://refills.bourbon.io/)
-* [Solarized](https://ethanschoonover.com/solarized/)
-* [Animate.css](https://animate.style/)
-
-## Contributing
-
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
-
-## Forking
-
-There is a [guide to forking Pixyll](https://pixyll.com/jekyll/pixyll/2019/01/26/guide-to-forking-pixyll/).
+`master` 브랜치에 push하면 [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)이 검사, 빌드, Pagefind 인덱스 생성을 거친 뒤 GitHub Pages에 배포합니다. GitHub 저장소의 Pages 설정은 `GitHub Actions`를 source로 사용해야 합니다.
