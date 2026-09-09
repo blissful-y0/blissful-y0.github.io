@@ -1,16 +1,1 @@
----
-import { profile, socialLinks } from '../data/site';
----
-
-<footer class="site-footer">
-  <div class="footer-top">
-    <p class="footer-signoff">오늘도 천천히,<br /><em>좋은 것을 만들어요.</em></p>
-    <div class="footer-links">
-      {socialLinks.map((link) => <a href={link.href} target={link.external ? '_blank' : undefined} rel={link.external ? 'noreferrer' : undefined}>{link.label} <span aria-hidden="true">↗</span></a>)}
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <span>© {new Date().getFullYear()} {profile.displayName}</span>
-    <span>샘플 콘텐츠로 구성한 미리보기 · made with late-night tea ☕</span>
-  </div>
-</footer>
+<footer class="site-footer"><span>© {new Date().getFullYear()} Bliss</span><a href="https://github.com/blissful-y0" target="_blank" rel="noreferrer">GitHub ↗</a><span>소개와 글은 샘플입니다.</span></footer>
