@@ -11,7 +11,7 @@ const posts = defineCollection({
     updated: z.coerce.date().optional(),
     category: z.string(),
     tags: z.array(z.string()).default([]),
-    readingTime: z.string().default('5분 읽기'),
+    readingTime: z.string().default('5 min read'),
     featured: z.boolean().default(false),
     sample: z.boolean().default(true),
   }),

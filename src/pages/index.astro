@@ -4,12 +4,12 @@ import SiteNav from '../components/SiteNav.astro';
 import CoffeeSteam from '../components/CoffeeSteam.astro';
 import '../styles/home.css';
 ---
-<BaseLayout title="Bliss — 작은 작업실" description="만들고, 배우고, 기록하는 Bliss의 작은 작업실.">
+<BaseLayout title="Bliss — After hours" description="A space for things I build and notes I keep.">
   <main>
-    <section class="room-hero" aria-label="비 오는 밤의 작업실">
+    <section class="room-hero" aria-label="A rainy evening at the desk">
       <div class="room-viewport">
         <div class="room-plane" data-room-plane>
-          <img src="/images/lofi-room-clean.png" alt="비 오는 창밖과 따뜻한 조명이 있는 밤의 작업실" width="1672" height="941" fetchpriority="high" />
+          <img src="/images/lofi-room-clean.png" alt="A warmly lit desk overlooking a rainy neighborhood" width="1672" height="941" fetchpriority="high" />
           <canvas id="room-rain" class="room-effects" width="1672" height="941" aria-hidden="true"></canvas>
           <svg class="room-effects" viewBox="0 0 1672 941" aria-hidden="true">
             <CoffeeSteam x={1255} y={550} id="home-coffee-steam" />
@@ -17,13 +17,13 @@ import '../styles/home.css';
         </div>
         <div class="room-shade" aria-hidden="true"></div>
         <div class="room-navigation"><SiteNav variant="hero" /></div>
-        <div class="room-title"><span class="room-eyebrow">BLISS’S CORNER</span><h1>잠시, 쉬어가요.</h1><p>만들고, 배우고, 기록하는 작은 공간.</p><a href="/blog/">기록 읽기 <span aria-hidden="true">↗</span></a></div>
-        <div class="room-bottom"><a href="#about">조금 더 아래로 <span aria-hidden="true">↓</span></a><button type="button" class="motion-toggle" aria-pressed="false">움직임 멈추기</button></div>
+        <div class="room-title"><span class="room-eyebrow">BLISS’S CORNER</span><h1>Stay a little.</h1><p>Things I build. Notes I keep.</p><a href="/blog/">Read the journal <span aria-hidden="true">↗</span></a></div>
+        <div class="room-bottom"><a href="#about">Scroll to explore <span aria-hidden="true">↓</span></a><button type="button" class="motion-toggle" aria-pressed="false">Pause motion</button></div>
       </div>
     </section>
-    <section class="quiet-about" id="about"><div><span class="room-eyebrow">ABOUT BLISS</span><h2>좋아하는 것을 만들고,<br />배운 것을 남깁니다.</h2></div><div class="quiet-links"><a href="/blog/">블로그 <span>↗</span></a><a href="https://github.com/blissful-y0" target="_blank" rel="noreferrer">GitHub <span>↗</span></a></div></section>
+    <section class="quiet-about" id="about"><div><span class="room-eyebrow">ABOUT BLISS</span><h2>Making things.<br />Keeping notes.</h2></div><div class="quiet-links"><a href="/blog/">Journal <span>↗</span></a><a href="https://github.com/blissful-y0" target="_blank" rel="noreferrer">GitHub <span>↗</span></a></div></section>
   </main>
-  <footer class="quiet-footer"><span>© 2026 Bliss</span><span>소개와 글은 샘플입니다.</span></footer>
+  <footer class="quiet-footer"><span>© 2026 Bliss</span><span>Sample content</span></footer>
 </BaseLayout>
 <script>
   const plane = document.querySelector<HTMLElement>('[data-room-plane]');
@@ -54,7 +54,7 @@ import '../styles/home.css';
   function sync() {
     hero?.classList.toggle('motion-paused', paused);
     toggle?.setAttribute('aria-pressed', String(paused));
-    if (toggle) { toggle.disabled = preference.matches; toggle.textContent = preference.matches ? '기기 설정: 움직임 줄이기' : paused ? '움직임 켜기' : '움직임 멈추기'; }
+    if (toggle) { toggle.disabled = preference.matches; toggle.textContent = preference.matches ? 'Reduced motion' : paused ? 'Resume motion' : 'Pause motion'; }
     schedule();
   }
   toggle?.addEventListener('click', () => { paused = !paused; sync(); });

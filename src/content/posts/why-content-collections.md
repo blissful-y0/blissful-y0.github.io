@@ -1,31 +1,31 @@
 ---
-title: '글이 쌓여도 길을 잃지 않도록'
-description: '마크다운 글과 메타데이터를 함께 관리하는 작은 블로그 구조를 실험한 샘플 기록입니다.'
+title: 'A place for words to gather'
+description: 'A sample build note about keeping Markdown posts and their metadata together as a blog grows.'
 date: 2026-08-22
 category: 'build log'
 tags: ['astro', 'content']
-readingTime: '5분 읽기'
+readingTime: '5 min read'
 featured: false
 sample: true
 ---
 
-## 글 파일을 오래 쓰는 방법
+## A durable home for posts
 
-블로그를 처음 만들 때는 글 하나를 빠르게 보여주는 일이 가장 중요해 보입니다. 글이 몇 개 늘어나면 제목, 날짜, 태그가 서로 다른 곳에 흩어지지 않도록 관리하는 일이 더 중요해집니다.
+When starting a blog, getting one post on screen can feel like the main goal. As the collection grows, it becomes more important to keep titles, dates, and metadata from drifting into separate places.
 
-이 사이트의 글은 마크다운 파일 하나와 frontmatter로 구성한 샘플입니다. 본문은 읽기 쉬운 텍스트로 남기고, 목록에서 필요한 정보는 앞부분에 모아 두는 방식입니다.
+The posts on this site are samples made from one Markdown file and its frontmatter. The body stays readable, while the information needed by the list stays at the top.
 
-## 데이터와 표현을 나눈다
+## Separate data from presentation
 
-콘텐츠 컬렉션은 글의 모양을 일정하게 유지하는 데 도움을 줍니다. 날짜가 문자열로 들어오거나 태그가 빠지는 실수를 빌드 시점에 발견할 수 있습니다.
+Content collections help keep the shape of each post consistent. A date that arrives as the wrong type or a missing field can be found while building.
 
 ```ts
 const posts = (await getCollection('posts'))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ```
 
-목록 화면은 제목과 요약에 집중하고, 본문 화면은 읽기에 집중하도록 역할을 나눴습니다. 같은 데이터가 다른 화면에서 재사용되기 때문에 나중에 실제 글로 바꾸기도 쉽습니다.
+The list focuses on titles and summaries, while the post page focuses on reading. The same data is reused in both places, so these samples can be replaced with real writing later.
 
-## 다음에 할 일
+## What comes next
 
-태그와 검색은 글이 적을 때는 단순한 클라이언트 필터만으로도 충분합니다. 글이 많아지는 시점에는 정적 검색 인덱스를 활용해도 됩니다. 중요한 것은 지금 필요한 흐름을 먼저 선명하게 만드는 일입니다.
+With only a few posts, a small client-side filter can be enough. As the collection grows, a static search index can take over. The useful part is making the current flow clear first.

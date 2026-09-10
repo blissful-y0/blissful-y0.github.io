@@ -1,35 +1,35 @@
 ---
-title: '조용한 인터페이스를 만드는 몇 가지 선택'
-description: '화면에 더 많이 넣는 대신, 사용자가 머물 자리를 남겨 두는 방법을 정리한 샘플 노트입니다.'
+title: 'A few choices for a quieter interface'
+description: 'A sample note on leaving room for people to stay, instead of putting more into every screen.'
 date: 2026-09-06
 category: 'design note'
 tags: ['design', 'interface']
-readingTime: '4분 읽기'
+readingTime: '4 min read'
 featured: true
 sample: true
 ---
 
-## 여백은 빈 공간이 아니다
+## Space is not empty
 
-인터페이스를 만들 때 가장 먼저 줄이는 것은 종종 여백입니다. 정보가 많아 보이고, 한 화면에 더 많은 일을 시킬 수 있기 때문입니다. 하지만 읽는 사람에게는 여백이 다음 행동을 고르는 짧은 호흡이 되기도 합니다.
+When building an interface, space is often the first thing to remove. A fuller screen can look more useful and appear to do more at once. For the reader, though, space can be the short breath that makes the next action easier to choose.
 
-이 글은 실제 제품의 지표나 사용성 결과가 아닌, 포트폴리오를 위한 샘플 디자인 노트입니다. 작은 화면에서 무엇을 덜어낼지 생각해 보는 출발점으로 남깁니다.
+This is a sample design note for the portfolio, not a report of product metrics or usability results. It is a starting point for thinking about what a small screen can leave out.
 
-## 먼저 리듬을 정한다
+## Set the rhythm first
 
-화면의 모든 요소가 같은 크기와 속도로 등장하면 시선이 머물 곳을 찾기 어렵습니다. 제목, 설명, 행동 버튼에 서로 다른 간격을 주면 정보의 순서가 자연스럽게 드러납니다.
+When every element arrives at the same size and speed, the eye has nowhere to settle. Different spacing for the title, description, and action lets the order of the information appear naturally.
 
-제가 자주 적어 두는 기준은 아래와 같습니다.
+These are a few small rules I return to:
 
-- 제목은 한 번에 읽을 수 있을 만큼만 크게 둡니다.
-- 설명은 다음 질문을 미리 답할 만큼만 씁니다.
-- 행동은 한 화면에서 하나를 먼저 제안합니다.
+- Keep the title only as large as it needs to be read in one pass.
+- Let the description answer the next question, and stop there.
+- Suggest one primary action on a screen.
 
-이 규칙은 정답이라기보다 화면을 덜어낼 때 사용하는 작은 체크리스트에 가깝습니다.
+These are less a set of answers than a small checklist for editing a screen down.
 
-## 작은 움직임의 역할
+## Let motion stay small
 
-애니메이션도 같은 리듬 안에 있어야 합니다. 요소가 나타날 때마다 튀어 오르면 조용한 화면과 어울리지 않습니다. 페이지의 분위기를 유지하려면 움직임의 거리를 줄이고, 사용자의 선택에만 반응하게 만드는 편이 좋습니다.
+Animation should live in the same rhythm. If every element jumps into view, it works against a quiet screen. Shorter distances and motion that responds to a choice help the page keep its mood.
 
 ```css
 .quiet-link {
@@ -42,8 +42,8 @@ sample: true
 }
 ```
 
-마지막에는 반드시 모션 감소 설정을 확인합니다. 화면이 조용하다는 말은 모든 사람에게 같은 움직임을 강요한다는 뜻이 아니니까요.
+Always check the reduced-motion setting at the end. A quiet screen should not ask everyone to experience the same movement.
 
-## 남겨 둔 질문
+## Leave a question behind
 
-좋은 화면은 모든 답을 한 번에 보여주지 않고, 다음에 확인할 수 있는 작은 호기심을 남깁니다. 앞으로 실제 작업을 추가하면서 이 원칙이 얼마나 오래 유지되는지 계속 살펴보려고 합니다.
+A good screen does not show every answer at once. It leaves a small curiosity to return to. As real work replaces these samples, I want to see how long this principle can stay useful.

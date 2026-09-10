@@ -23,7 +23,6 @@ const toc = headings.filter((heading) => heading.depth === 2);
   <main class="page-content page-content--post" data-pagefind-body>
     <header class="post-header">
       <div class="post-header__meta">
-        <span class="post-category" data-pagefind-filter="category">{entry.data.category}</span>
         <span>{formatDate(entry.data.date)}</span>
         <span>·</span>
         <span>{entry.data.readingTime}</span>
@@ -33,7 +32,7 @@ const toc = headings.filter((heading) => heading.depth === 2);
     </header>
 
     <div class="post-layout">
-      {toc.length > 0 && <aside class="post-toc" aria-label="글 목차">
+      {toc.length > 0 && <aside class="post-toc" aria-label="On this page">
         <p>on this page</p>
         <ol>
           {toc.map((heading) => <li><a href={`#${heading.slug}`}>{heading.text}</a></li>)}
@@ -42,15 +41,12 @@ const toc = headings.filter((heading) => heading.depth === 2);
       <article class="prose">
         <Content />
         <div class="post-end">
-          <span class="post-tags" aria-label="태그">
-            {entry.data.tags.map((tag) => <span data-pagefind-filter={`tag:${tag}`}>#{tag}</span>)}
-          </span>
-          <a class="text-link text-link--dark" href="/blog/">목록으로 <span aria-hidden="true">↗</span></a>
+          <a class="text-link text-link--dark" href="/blog/">Back to Journal <span aria-hidden="true">↗</span></a>
         </div>
       </article>
     </div>
 
-    <nav class="post-navigation" aria-label="이전 글과 다음 글">
+    <nav class="post-navigation" aria-label="Previous and next entries">
       {newerPost ? <a class="text-link text-link--dark" href={`/blog/${newerPost.id}/`}><span aria-hidden="true">←</span> {newerPost.data.title}</a> : <span></span>}
       {olderPost ? <a class="text-link text-link--dark" href={`/blog/${olderPost.id}/`}>{olderPost.data.title} <span aria-hidden="true">→</span></a> : <span></span>}
     </nav>

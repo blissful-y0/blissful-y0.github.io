@@ -6,36 +6,27 @@ import SiteFooter from '../../components/SiteFooter.astro';
 import '../../styles/blog.css';
 
 const posts = (await getCollection('posts')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-const tags = [...new Set(posts.flatMap((post) => post.data.tags))];
 ---
 
-<BaseLayout title="Journal · Bliss" description="작업과 배움의 과정을 천천히 기록하는 공간입니다." compactHeader>
+<BaseLayout title="Journal · Bliss" description="Notes on making, learning, and quiet digital work." compactHeader>
   <main class="page-main">
     <header class="page-heading">
       <div class="page-heading__inner">
-        <p class="section-kicker">a quiet journal</p>
-        <h1>기록<span>.</span></h1>
-        <p>만들면서 배운 것, 오래 생각한 것, 다음 실험을 위한 작은 메모를 남깁니다.</p>
+        <h1>Journal</h1>
       </div>
     </header>
-    <section class="page-content" aria-label="블로그 글 목록">
+    <section class="page-content" aria-label="Journal entries">
       <div class="blog-toolbar">
-        <div class="filter-tabs" role="group" aria-label="태그로 필터링">
-          <button class="filter-button" type="button" aria-pressed="true" data-filter="all" aria-controls="blog-results">all</button>
-          {tags.map((tag) => <button class="filter-button" type="button" aria-pressed="false" data-filter={tag} aria-controls="blog-results">{tag}</button>)}
-        </div>
         <label class="search-box">
           <span aria-hidden="true">⌕</span>
-          <input type="search" placeholder="본문까지 검색" aria-label="본문까지 검색" data-search />
+          <input type="search" placeholder="Search journal" aria-label="Search journal" data-search />
         </label>
       </div>
-      <p class="search-hint" data-search-status>태그를 고르거나 글의 본문까지 검색해 보세요.</p>
-      <p class="result-count" data-result-count>{posts.length}개의 글</p>
       <div class="blog-post-grid" data-post-list>
         {posts.map((post) => <PostCard post={post} />)}
       </div>
       <div class="pagefind-results" id="blog-results" data-pagefind-results hidden></div>
-      <p class="empty-state" data-empty>검색 조건에 맞는 글이 없습니다. 다른 단어로 찾아보세요.</p>
+      <p class="empty-state" data-empty>No matching entries.</p>
     </section>
   </main>
   <SiteFooter />
@@ -55,17 +46,13 @@ const tags = [...new Set(posts.flatMap((post) => post.data.tags))];
 
   type PagefindClient = {
     init: () => Promise<void>;
-    search: (query: string | null, options?: { filters?: Record<string, string> }) => Promise<{ results: PagefindResult[] }>;
+    search: (query: string | null) => Promise<{ results: PagefindResult[] }>;
   };
 
   const searchInput = document.querySelector<HTMLInputElement>('[data-search]');
   const cards = [...document.querySelectorAll<HTMLElement>('[data-post-card]')];
-  const filters = [...document.querySelectorAll<HTMLButtonElement>('[data-filter]')];
-  const resultCount = document.querySelector<HTMLElement>('[data-result-count]');
   const resultList = document.querySelector<HTMLElement>('[data-pagefind-results]');
   const emptyState = document.querySelector<HTMLElement>('[data-empty]');
-  const searchStatus = document.querySelector<HTMLElement>('[data-search-status]');
-  let activeTag = 'all';
   let pagefind: PagefindClient | null = null;
   let pagefindPromise: Promise<PagefindClient> | null = null;
   let requestId = 0;
@@ -103,15 +90,12 @@ const tags = [...new Set(posts.flatMap((post) => post.data.tags))];
       article.className = 'pagefind-result-card';
       const link = document.createElement('a');
       link.href = record.url ?? '/blog/';
-      const kicker = document.createElement('p');
-      kicker.className = 'section-kicker';
-      kicker.textContent = 'journal / search result';
       const title = document.createElement('h3');
-      title.textContent = record.meta?.title ?? record.title ?? '기록';
+      title.textContent = record.meta?.title ?? record.title ?? 'Journal entry';
       const excerpt = document.createElement('p');
       excerpt.className = 'pagefind-result-excerpt';
       excerpt.innerHTML = record.excerpt ?? '';
-      link.append(kicker, title, excerpt);
+      link.append(title, excerpt);
       article.append(link);
       resultList.append(article);
     });
@@ -121,23 +105,18 @@ const tags = [...new Set(posts.flatMap((post) => post.data.tags))];
   const applyLocalFallback = (query: string, expectedRequestId: number) => {
     if (expectedRequestId !== requestId) return;
     const visibleCards = cards.filter((card) => {
-      const cardTags = (card.dataset.tags ?? '').split('|').filter(Boolean);
       const haystack = `${card.dataset.title ?? ''} ${card.dataset.description ?? ''}`;
-      return (!query || haystack.includes(query)) && (activeTag === 'all' || cardTags.includes(activeTag));
+      return !query || haystack.includes(query);
     });
     setCardVisibility(visibleCards);
-    if (resultCount) resultCount.textContent = `${visibleCards.length}개의 글`;
-    if (searchStatus) searchStatus.textContent = '빌드 전 미리보기에서는 제목과 요약을 검색합니다.';
     emptyState?.classList.toggle('is-visible', visibleCards.length === 0);
   };
 
   const updateResults = async () => {
     const currentRequestId = ++requestId;
     const query = searchInput?.value.trim().toLowerCase() ?? '';
-    if (!query && activeTag === 'all') {
+    if (!query) {
       setCardVisibility(cards);
-      if (resultCount) resultCount.textContent = `${cards.length}개의 글`;
-      if (searchStatus) searchStatus.textContent = '태그를 고르거나 글의 본문까지 검색해 보세요.';
       emptyState?.classList.remove('is-visible');
       return;
     }
@@ -145,15 +124,13 @@ const tags = [...new Set(posts.flatMap((post) => post.data.tags))];
     try {
       const client = await getPagefind();
       if (currentRequestId !== requestId) return;
-      const response = await client.search(query || null, activeTag === 'all' ? undefined : { filters: { tag: activeTag } });
+      const response = await client.search(query);
       if (currentRequestId !== requestId) return;
       const records = (await Promise.all(response.results.map((result) => result.data())))
         .filter((record) => record.url?.includes('/blog/') && !record.url.endsWith('/blog/'));
       if (currentRequestId !== requestId) return;
       setCardVisibility([]);
       showPagefindResults(records);
-      if (resultCount) resultCount.textContent = `${records.length}개의 검색 결과`;
-      if (searchStatus) searchStatus.textContent = '본문과 제목을 함께 검색한 결과입니다.';
       emptyState?.classList.toggle('is-visible', records.length === 0);
     } catch {
       applyLocalFallback(query, currentRequestId);
@@ -161,9 +138,4 @@ const tags = [...new Set(posts.flatMap((post) => post.data.tags))];
   };
 
   searchInput?.addEventListener('input', () => { void updateResults(); });
-  filters.forEach((filter) => filter.addEventListener('click', () => {
-    activeTag = filter.dataset.filter ?? 'all';
-    filters.forEach((item) => item.setAttribute('aria-pressed', String(item === filter)));
-    void updateResults();
-  }));
 </script>

@@ -3,6 +3,6 @@ interface Props { variant?: 'default' | 'hero' }
 const { variant = 'default' } = Astro.props;
 ---
 <header class:list={['site-nav', `site-nav--${variant}`]}>
-  <a class="brand" href="/" aria-label="Bliss 홈">bliss<span aria-hidden="true">.</span></a>
-  <nav class="quiet-nav" aria-label="주 메뉴"><a href="/">About</a><a href="/blog/">Blog</a></nav>
+  <a class="brand" href="/" aria-label="Bliss home">bliss<span aria-hidden="true">.</span></a>
+  <nav class="quiet-nav" aria-label="Main navigation"><a href="/">About</a><a href="/blog/">Blog</a></nav>
 </header>

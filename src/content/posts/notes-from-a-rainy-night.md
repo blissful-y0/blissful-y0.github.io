@@ -1,28 +1,28 @@
 ---
-title: '비 오는 밤에 적어 둔 세 가지'
-description: '작업을 멈추고 잠깐 창밖을 보며 적은, 다음 작업을 위한 샘플 메모입니다.'
+title: 'Three notes from a rainy night'
+description: 'A sample note for the next session, written after pausing work to look out the window.'
 date: 2026-07-14
 category: 'night note'
 tags: ['process', 'notes']
-readingTime: '3분 읽기'
+readingTime: '3 min read'
 featured: false
 sample: true
 ---
 
-## 속도를 낮추면 보이는 것
+## What appears when the pace slows
 
-하루의 마지막에는 작업 목록보다 작업 사이의 간격이 더 잘 보입니다. 어느 화면에서 자꾸 멈추는지, 어떤 문장이 지나치게 길었는지, 다음에 무엇을 먼저 보고 싶은지가 그때 드러납니다.
+At the end of a day, the gaps between tasks become clearer than the list itself. That is when it becomes easier to see where a screen keeps making you pause, which sentence has grown too long, and what should be looked at first tomorrow.
 
-이 메모는 특정 프로젝트의 회고가 아니라, 앞으로 작업을 살펴볼 때 사용할 질문을 모아 둔 샘플입니다.
+This is not a retrospective of a particular project. It is a sample collection of questions to use when looking over future work.
 
-## 세 가지 질문
+## Three questions
 
-1. 처음 방문한 사람이 지금 어디에 있는지 알 수 있는가?
-2. 다음 행동을 고르는 데 필요한 정보가 충분한가?
-3. 아무것도 하지 않고 머물러도 불편하지 않은가?
+1. Can a first-time visitor tell where they are?
+2. Is there enough information to choose the next action?
+3. Is it comfortable to stay for a moment without doing anything?
 
-질문은 단순하지만, 화면을 다시 보는 방향을 바꿔 줍니다. 특히 세 번째 질문은 장식과 기능을 구분하는 데 도움이 됩니다.
+The questions are simple, but they change the angle from which a screen is reviewed. The third is especially useful for separating decoration from function.
 
-## 다시 책상으로
+## Back to the desk
 
-비가 그치면 다시 작업으로 돌아갑니다. 완성도를 한 번에 끌어올리기보다, 오늘 확인할 수 있는 작은 부분을 정하고 다음 날 이어 갈 메모를 남깁니다.
+When the rain stops, the work can begin again. Instead of trying to raise the finish all at once, choose one small thing to verify today and leave a note for tomorrow.

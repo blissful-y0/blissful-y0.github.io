@@ -7,9 +7,9 @@ export async function GET(context) {
 
   return rss({
     title: 'Bliss Journal',
-    description: '작업과 배움의 과정을 천천히 기록하는 공간입니다.',
+    description: 'Notes on building and learning.',
     site: context.site ?? 'https://blissful-y0.github.io',
-    customData: '<language>ko</language>',
+    customData: '<language>en</language>',
     items: posts.map((post) => ({
       title: post.data.title,
       description: post.data.description,
