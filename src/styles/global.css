@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Gowun+Dodum&family=Gowun+Batang:wght@400;700&display=swap');
 
 :root {
   --night: #181744;
@@ -15,7 +15,8 @@
   --amber-light: #ffddeb;
   --lavender: #aaa9ce;
   --moss: #a8b88c;
-  --sans: 'Manrope', 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+  --sans: 'Gowun Dodum', 'Apple SD Gothic Neo', sans-serif;
+  --display: 'Gowun Batang', 'Batang', serif;
   --mono: 'DM Mono', 'SFMono-Regular', Consolas, monospace;
   font-family: var(--sans);
   color: var(--ink);
