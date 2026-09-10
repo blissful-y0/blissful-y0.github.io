@@ -1,0 +1,37 @@
+---
+interface Props { x: number; y: number; id: string }
+const { x, y, id } = Astro.props;
+---
+<g class="illustrated-steam" transform={`translate(${x} ${y})`} aria-hidden="true">
+  <defs><linearGradient id={id} x1="0" y1="0" x2="0" y2="-80" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f5e8df" stop-opacity=".18"/><stop offset=".28" stop-color="#f5e8df" stop-opacity=".7"/><stop offset=".7" stop-color="#e6e3ef" stop-opacity=".35"/><stop offset="1" stop-color="#e6e3ef" stop-opacity="0"/></linearGradient></defs>
+  {[0,1,2].map(i => <path data-steam-strand={i} d={`M${(i-1)*8} 0 Q${(i-1)*8-10} -30 ${(i-1)*8} -55 T${(i-1)*8+5} -80`} fill="none" stroke={`url(#${id})`} stroke-width={3.4-i*.45} stroke-linecap="round" opacity={.85-i*.12} />)}
+</g>
+<script>
+  const strands = [...document.querySelectorAll<SVGPathElement>('[data-steam-strand]')];
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  let time = 0, last = 0, frame = 0;
+  function paint(now: number) {
+    frame = requestAnimationFrame(paint);
+    const delta = Math.min((now-last)/1000,.05);
+    if(now-last<1000/30)return;
+    last=now;
+    if(document.hidden)return;
+    if(!reduced.matches)time+=delta;
+    for(const strand of strands){
+      if(strand.closest('.motion-paused') || reduced.matches)continue;
+      const index=Number(strand.dataset.steamStrand), base=(index-1)*8;
+      let d=`M${base} 0`;
+      // 입구는 고정하고, 위로 갈수록 넓게 흔들리며 흐려집니다.
+      for(let step=1;step<=24;step++){
+        const height=step/24;
+        const wave=Math.sin(height*7-time*1.35+index*1.8);
+        const x=base+wave*(3+height*10)*Math.min(1,height*5);
+        d+=` L${x.toFixed(2)} ${(-height*80).toFixed(2)}`;
+      }
+      strand.setAttribute('d',d);
+    }
+  }
+  frame=requestAnimationFrame(paint);
+  window.addEventListener('pagehide',()=>cancelAnimationFrame(frame));
+  window.addEventListener('pageshow',event=>{if(event.persisted){last=performance.now();frame=requestAnimationFrame(paint);}});
+</script>

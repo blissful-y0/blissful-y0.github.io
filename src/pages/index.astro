@@ -1,8 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SiteNav from '../components/SiteNav.astro';
+import CoffeeSteam from '../components/CoffeeSteam.astro';
 import '../styles/home.css';
-const rain = Array.from({length: 240}, (_, i) => ({x: (i * 137.7) % 1700, y: (i * 71.3) % 1900, length: 18 + (i % 4) * 8}));
+const rain = Array.from({length: 480}, (_, i) => ({x: (i * 137.7) % 1700, y: (i * 71.3) % 1900, length: 18 + (i % 4) * 8}));
 ---
 <BaseLayout title="Bliss — 작은 작업실" description="만들고, 배우고, 기록하는 Bliss의 작은 작업실.">
   <main>
@@ -14,13 +15,13 @@ const rain = Array.from({length: 240}, (_, i) => ({x: (i * 137.7) % 1700, y: (i 
             <defs><clipPath id="desktop-window"><path d="M932 0H1672V445H1500V310H1025V319H935Z" /></clipPath><radialGradient id="lamp-glow"><stop stop-color="#ffd5a0" stop-opacity=".19"/><stop offset="1" stop-color="#ffd5a0" stop-opacity="0"/></radialGradient></defs>
             <g clip-path="url(#desktop-window)"><g class="rain-drift">{rain.map(r => <path d={`M${r.x} ${r.y - 940}l-2 ${r.length}`} />)}{rain.map(r => <path d={`M${r.x} ${r.y}l-2 ${r.length}`} />)}</g></g>
             <ellipse class="lamp-breathe" cx="887" cy="371" rx="155" ry="160" fill="url(#lamp-glow)"/>
-            <g class="cup-steam" transform="translate(1227 548)"><path d="M0 0C-12-15 12-27 0-43"/><path d="M9-2C22-17-6-31 9-50"/><path d="M-7-3C-19-18 3-30-7-47"/></g>
+            <CoffeeSteam x={1227} y={548} id="home-steam-desktop" />
           </svg>
           <svg class="room-effects effects-mobile" viewBox="0 0 941 1672" aria-hidden="true">
             <defs><clipPath id="mobile-window"><path d="M386 425L614 399V764H462V782H386Z M652 398L923 358V771H870V765H652Z"/></clipPath></defs>
             <g clip-path="url(#mobile-window)"><g class="rain-drift">{rain.map(r => <path d={`M${r.x} ${r.y - 700}l-2 ${r.length}`} />)}{rain.map(r => <path d={`M${r.x} ${r.y}l-2 ${r.length}`} />)}</g></g>
             <ellipse class="lamp-breathe" cx="353" cy="814" rx="143" ry="180" fill="url(#lamp-glow)"/>
-            <g class="cup-steam" transform="translate(647 984)"><path d="M0 0C-12-15 12-27 0-43"/><path d="M9-2C22-17-6-31 9-50"/><path d="M-7-3C-19-18 3-30-7-47"/></g>
+            <CoffeeSteam x={647} y={984} id="home-steam-mobile" />
           </svg>
         </div>
         <div class="room-shade" aria-hidden="true"></div>
