@@ -3,25 +3,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import SiteNav from '../components/SiteNav.astro';
 import CoffeeSteam from '../components/CoffeeSteam.astro';
 import '../styles/home.css';
-const rain = Array.from({length: 480}, (_, i) => ({x: (i * 137.7) % 1700, y: (i * 71.3) % 1900, length: 18 + (i % 4) * 8}));
 ---
 <BaseLayout title="Bliss — 작은 작업실" description="만들고, 배우고, 기록하는 Bliss의 작은 작업실.">
   <main>
     <section class="room-hero" aria-label="비 오는 밤의 작업실">
       <div class="room-viewport">
         <div class="room-plane" data-room-plane>
-          <picture><source media="(max-width: 720px)" srcset="/images/lofi-room-mobile.webp" /><img src="/images/lofi-room-desktop.webp" alt="비 오는 창밖과 따뜻한 조명이 있는 밤의 작업실" width="1672" height="941" fetchpriority="high" /></picture>
-          <svg class="room-effects effects-desktop" viewBox="0 0 1672 941" aria-hidden="true">
-            <defs><clipPath id="desktop-window"><path d="M932 0H1672V445H1500V310H1025V319H935Z" /></clipPath><radialGradient id="lamp-glow"><stop stop-color="#ffd5a0" stop-opacity=".19"/><stop offset="1" stop-color="#ffd5a0" stop-opacity="0"/></radialGradient></defs>
-            <g clip-path="url(#desktop-window)"><g class="rain-drift">{rain.map(r => <path d={`M${r.x} ${r.y - 940}l-2 ${r.length}`} />)}{rain.map(r => <path d={`M${r.x} ${r.y}l-2 ${r.length}`} />)}</g></g>
-            <ellipse class="lamp-breathe" cx="887" cy="371" rx="155" ry="160" fill="url(#lamp-glow)"/>
-            <CoffeeSteam x={1227} y={548} id="home-steam-desktop" />
-          </svg>
-          <svg class="room-effects effects-mobile" viewBox="0 0 941 1672" aria-hidden="true">
-            <defs><clipPath id="mobile-window"><path d="M386 425L614 399V764H462V782H386Z M652 398L923 358V771H870V765H652Z"/></clipPath></defs>
-            <g clip-path="url(#mobile-window)"><g class="rain-drift">{rain.map(r => <path d={`M${r.x} ${r.y - 700}l-2 ${r.length}`} />)}{rain.map(r => <path d={`M${r.x} ${r.y}l-2 ${r.length}`} />)}</g></g>
-            <ellipse class="lamp-breathe" cx="353" cy="814" rx="143" ry="180" fill="url(#lamp-glow)"/>
-            <CoffeeSteam x={647} y={984} id="home-steam-mobile" />
+          <img src="/images/lofi-room-clean.png" alt="비 오는 창밖과 따뜻한 조명이 있는 밤의 작업실" width="1672" height="941" fetchpriority="high" />
+          <canvas id="room-rain" class="room-effects" width="1672" height="941" aria-hidden="true"></canvas>
+          <svg class="room-effects" viewBox="0 0 1672 941" aria-hidden="true">
+            <CoffeeSteam x={1255} y={550} id="home-coffee-steam" />
           </svg>
         </div>
         <div class="room-shade" aria-hidden="true"></div>
@@ -48,12 +39,12 @@ const rain = Array.from({length: 480}, (_, i) => ({x: (i * 137.7) % 1700, y: (i 
     if (!plane || !viewport || !hero) return;
     const {width, height} = viewport.getBoundingClientRect();
     const mobile = matchMedia('(max-width: 720px)').matches;
-    const ratio = mobile ? 941 / 1672 : 1672 / 941;
+    const ratio = 1672 / 941;
     const imageWidth = Math.max(width, height * ratio);
     const imageHeight = imageWidth / ratio;
     plane.style.width = `${imageWidth}px`;
     plane.style.height = `${imageHeight}px`;
-    plane.style.left = `${(width - imageWidth) / 2}px`;
+    plane.style.left = `${(width - imageWidth) / (mobile ? 1 : 2)}px`;
     plane.style.top = `${(height - imageHeight) / 2}px`;
     const progress = paused ? 0 : Math.min(1, Math.max(0, -hero.getBoundingClientRect().top / height));
     plane.style.transform = `scale(${1 + progress * .18})`;
@@ -71,4 +62,22 @@ const rain = Array.from({length: 480}, (_, i) => ({x: (i * 137.7) % 1700, y: (i 
   window.addEventListener('scroll', schedule, {passive:true});
   if (viewport) new ResizeObserver(schedule).observe(viewport);
   sync();
+  const canvas = document.querySelector<HTMLCanvasElement>('#room-rain')!;
+  const ctx = canvas.getContext('2d')!;
+  let last = 0, rainFrame = 0;
+let seed=715;
+const random=()=>{seed=(seed*16807)%2147483647;return(seed-1)/2147483646;};
+const drops=Array.from({length:700},()=>({x:930+random()*750,y:random()*500,depth:random(),phase:random()*6.28}));
+const glass=new Path2D('M934 0H1204V317H1030V321H934Z M1242 0H1672V440H1500V313H1242Z');
+function draw(now:number){rainFrame=requestAnimationFrame(draw);if(document.hidden)return;const dt=Math.min((now-last)/1000,.04);last=now;ctx.clearRect(0,0,1672,941);ctx.save();ctx.clip(glass);
+for(const d of drops){if(!paused){d.y+=dt*(30+d.depth*95);d.x-=dt*(2+d.depth*4);if(d.y>490){d.y=-30;d.x=930+random()*750;}}
+const length=6+d.depth*21;const alpha=(.14+d.depth*.36)*(.75+.25*Math.sin(d.phase+d.y*.015));
+ctx.lineWidth=.65+d.depth*.8;ctx.lineCap='round';const gradient=ctx.createLinearGradient(d.x,d.y,d.x-1,d.y+length);gradient.addColorStop(0,'rgba(178,199,227,0)');gradient.addColorStop(.5,`rgba(178,199,227,${alpha})`);gradient.addColorStop(1,'rgba(178,199,227,0)');ctx.strokeStyle=gradient;ctx.beginPath();ctx.moveTo(d.x,d.y);ctx.quadraticCurveTo(d.x-.6,d.y+length*.6,d.x-1,d.y+length);ctx.stroke();}
+ctx.restore();
+}
+  rainFrame = requestAnimationFrame(draw);
+  window.addEventListener('pagehide', () => cancelAnimationFrame(rainFrame));
+  window.addEventListener('pageshow', event => {
+    if (event.persisted) { last = performance.now(); rainFrame = requestAnimationFrame(draw); }
+  });
 </script>
