@@ -17,12 +17,12 @@ const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 let paused=reduced.matches, mode='animated', last=0, frame=0;
 let seed=715;
 const random=()=>{seed=(seed*16807)%2147483647;return(seed-1)/2147483646;};
-const drops=Array.from({length:330},()=>({x:930+random()*750,y:random()*500,depth:random(),phase:random()*6.28}));
+const drops=Array.from({length:460},()=>({x:930+random()*750,y:random()*500,depth:random(),phase:random()*6.28}));
 const glass=new Path2D('M934 0H1204V317H1030V321H934Z M1242 0H1672V440H1500V313H1242Z');
 function draw(now:number){frame=requestAnimationFrame(draw);if(document.hidden)return;const dt=Math.min((now-last)/1000,.04);last=now;ctx.clearRect(0,0,1672,941);if(mode!=='animated')return;ctx.save();ctx.clip(glass);
 for(const d of drops){if(!paused){d.y+=dt*(30+d.depth*95);d.x-=dt*(2+d.depth*4);if(d.y>490){d.y=-30;d.x=930+random()*750;}}
-const length=3+d.depth*14;const alpha=(.07+d.depth*.20)*(.75+.25*Math.sin(d.phase+d.y*.015));
-ctx.lineWidth=.45+d.depth*.55;ctx.lineCap='round';const gradient=ctx.createLinearGradient(d.x,d.y,d.x-1,d.y+length);gradient.addColorStop(0,'rgba(155,179,213,0)');gradient.addColorStop(.5,`rgba(155,179,213,${alpha})`);gradient.addColorStop(1,'rgba(155,179,213,0)');ctx.strokeStyle=gradient;ctx.beginPath();ctx.moveTo(d.x,d.y);ctx.quadraticCurveTo(d.x-.6,d.y+length*.6,d.x-1,d.y+length);ctx.stroke();}
+const length=6+d.depth*21;const alpha=(.14+d.depth*.36)*(.75+.25*Math.sin(d.phase+d.y*.015));
+ctx.lineWidth=.65+d.depth*.8;ctx.lineCap='round';const gradient=ctx.createLinearGradient(d.x,d.y,d.x-1,d.y+length);gradient.addColorStop(0,'rgba(178,199,227,0)');gradient.addColorStop(.5,`rgba(178,199,227,${alpha})`);gradient.addColorStop(1,'rgba(178,199,227,0)');ctx.strokeStyle=gradient;ctx.beginPath();ctx.moveTo(d.x,d.y);ctx.quadraticCurveTo(d.x-.6,d.y+length*.6,d.x-1,d.y+length);ctx.stroke();}
 ctx.restore();}
 const sync=()=>{pause.setAttribute('aria-pressed',String(paused));pause.textContent=paused?'비 재생':'비 멈추기';};
 pause.addEventListener('click',()=>{paused=!paused;sync();});
