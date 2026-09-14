@@ -18,7 +18,6 @@ import '../styles/home.css';
         <div class="room-shade" aria-hidden="true"></div>
         <div class="room-navigation"><SiteNav variant="hero" /></div>
         <div class="room-title"><span class="room-eyebrow">BLISS’S CORNER</span><h1>Stay a little.</h1><p>Things I build. Notes I keep.</p><a href="/blog/">Read the journal <span aria-hidden="true">↗</span></a></div>
-        <div class="room-bottom"><a href="#about">Scroll to explore <span aria-hidden="true">↓</span></a><button type="button" class="motion-toggle" aria-pressed="false">Pause motion</button></div>
       </div>
     </section>
     <section class="quiet-about" id="about"><div><span class="room-eyebrow">ABOUT BLISS</span><h2>Making things.<br />Keeping notes.</h2></div><div class="quiet-links"><a href="/blog/">Journal <span>↗</span></a><a href="https://github.com/blissful-y0" target="_blank" rel="noreferrer">GitHub <span>↗</span></a></div></section>
@@ -30,7 +29,6 @@ import '../styles/home.css';
   const viewport = document.querySelector<HTMLElement>('.room-viewport');
   const hero = document.querySelector<HTMLElement>('.room-hero');
   const title = document.querySelector<HTMLElement>('.room-title');
-  const toggle = document.querySelector<HTMLButtonElement>('.motion-toggle');
   const preference = matchMedia('(prefers-reduced-motion: reduce)');
   let paused = preference.matches;
   let frame = 0;
@@ -53,11 +51,8 @@ import '../styles/home.css';
   function schedule() { if (!frame) frame = requestAnimationFrame(update); }
   function sync() {
     hero?.classList.toggle('motion-paused', paused);
-    toggle?.setAttribute('aria-pressed', String(paused));
-    if (toggle) { toggle.disabled = preference.matches; toggle.textContent = preference.matches ? 'Reduced motion' : paused ? 'Resume motion' : 'Pause motion'; }
     schedule();
   }
-  toggle?.addEventListener('click', () => { paused = !paused; sync(); });
   preference.addEventListener('change', () => { paused = preference.matches; sync(); });
   window.addEventListener('scroll', schedule, {passive:true});
   if (viewport) new ResizeObserver(schedule).observe(viewport);
