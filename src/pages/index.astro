@@ -63,7 +63,9 @@ import '../styles/home.css';
 let seed=715;
 const random=()=>{seed=(seed*16807)%2147483647;return(seed-1)/2147483646;};
 const drops=Array.from({length:700},()=>({x:930+random()*750,y:random()*500,depth:random(),phase:random()*6.28}));
-const glass=new Path2D('M934 0H1204V317H1030V321H934Z M1242 0H1672V440H1500V313H1242Z');
+// Keep rain behind the foreground plant and above the lower window frame.
+// Coordinates share the background plate's 1672 × 941 reference space.
+const glass=new Path2D('M934 0H1204V317H1030V321H934Z M1242 0H1672V348 Q1658 342 1643 358 L1635 373 Q1625 348 1600 346 Q1585 347 1587 365 L1598 386 Q1571 375 1560 391 L1544 398 L1537 414 H1500V313H1242Z');
 function draw(now:number){rainFrame=requestAnimationFrame(draw);if(document.hidden)return;const dt=Math.min((now-last)/1000,.04);last=now;ctx.clearRect(0,0,1672,941);ctx.save();ctx.clip(glass);
 for(const d of drops){if(!paused){d.y+=dt*(30+d.depth*95);d.x-=dt*(2+d.depth*4);if(d.y>490){d.y=-30;d.x=930+random()*750;}}
 const length=6+d.depth*21;const alpha=(.14+d.depth*.36)*(.75+.25*Math.sin(d.phase+d.y*.015));
